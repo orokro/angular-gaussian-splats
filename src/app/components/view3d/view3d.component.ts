@@ -8,6 +8,9 @@
 // Angular Imports
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 
+// App
+import { Pointcloud } from '../../services/pointclouds.service';
+
 // Library Imports
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -25,6 +28,7 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
     @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
     @Input() plyPath: string | null = null;
 	@Input() showDebugCube: boolean = false;
+	@Input() model: Pointcloud | null = null;
 
     private renderer!: THREE.WebGLRenderer;
     private scene = new THREE.Scene();
@@ -98,18 +102,19 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 	 */
     async ngOnChanges(): Promise<void> {
 
-        if (!this.plyPath)
+		if (!this.model)
 			return;
 
-        await this.loadPly(this.plyPath);
-    }
+		await this.loadPly(this.model.path, this.model.transform);
+	}
+
 
 	/**
 	 * Loads a PLY file and adds it to the scene.
 	 * 
 	 * @param path - The path to the PLY file to be loaded.
 	 */
-    private loadPly = async (path: string) => {
+    private loadPly = async (path: string, transform?: Pointcloud['transform']) => {
 
         const loader = new PLYLoader();
 
@@ -133,6 +138,12 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 
             this.currentPoints = points;
             this.scene.add(points);
+
+			if (transform) {
+				points.position.set(transform.position.x, transform.position.y, transform.position.z);
+				points.rotation.set(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+				points.scale.set(transform.scale.x, transform.scale.y, transform.scale.z);
+			}
 
             // frame the object
             if (geometry.boundingBox) {

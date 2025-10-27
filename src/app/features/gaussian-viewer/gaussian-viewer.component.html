@@ -2,11 +2,11 @@
 
 	<!-- our main viewer -->
 	<app-view3d 
-		[plyPath]="currentPath"
+		[model]="selectedModel"
 		[showDebugCube]="false"
 	></app-view3d>
 
-	<app-picker class="picker" (pick)="onPick($event)"></app-picker>
+	<app-picker (modelSelected)="selectedModel = $event"></app-picker>
 	<app-status-bar class="status"></app-status-bar>
 
 </section>

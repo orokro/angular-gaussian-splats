@@ -13,15 +13,17 @@ import { View3DComponent } from '../../components/view3d/view3d.component';
 import { PickerComponent } from '../../components/picker/picker.component';
 import { StatusBarComponent } from '../../components/status-bar/status-bar.component';
 
+// Service Imports
+import { Pointcloud } from '../../services/pointclouds.service';
+
 
 @Component({
 	selector: 'app-gaussian-viewer',
 	standalone: true,
-	imports: [View3DComponent, PickerComponent, StatusBarComponent],
+	imports: [PickerComponent, View3DComponent, StatusBarComponent],
 	templateUrl: './gaussian-viewer.component.html',
 	styleUrls: ['./gaussian-viewer.component.scss']
 })
 export class GaussianViewerComponent {
-	currentPath: string | null = null;
-	onPick(path: string) { this.currentPath = path; }
+	selectedModel: Pointcloud | null = null;
 }
