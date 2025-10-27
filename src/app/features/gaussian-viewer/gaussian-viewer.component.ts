@@ -29,7 +29,6 @@ export class GaussianViewerComponent {
 	currentModel: Pointcloud | null = null;
 
 	onModelSelected(model: Pointcloud) {
-		console.log('[Viewer] Model selected:', model.name);
 		this.currentModel = model;
 	}
 }

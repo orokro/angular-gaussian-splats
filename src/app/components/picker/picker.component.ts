@@ -36,7 +36,7 @@ export class PickerComponent implements OnInit {
 
 			// Defer to next microtask to avoid ExpressionChangedAfterItHasBeenCheckedError
 			setTimeout(() => {
-				console.log('[Picker] Auto-loading first model:', firstModel.name);
+				// console.log('[Picker] Auto-loading first model:', firstModel.name);
 				this.modelSelected.emit(firstModel);
 			});
 		}
@@ -47,7 +47,7 @@ export class PickerComponent implements OnInit {
 	 * Handles selection of a point cloud model.
 	 */
 	onSelect(model: Pointcloud) {
-		console.log('[Picker] Selected:', model);
+		// console.log('[Picker] Selected:', model);
 		this.modelSelected.emit(model);
 	}
 

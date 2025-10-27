@@ -28,11 +28,15 @@ import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader.js';
 })
 export class View3DComponent implements AfterViewInit, OnDestroy {
 
+	// grab ref to the canvas so we can use it for our vanilla ThreeJS renderer target
 	@ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
+
+	// props
 	@Input() plyPath: string | null = null;
 	@Input() showDebugCube: boolean = false;
 	@Input() model: any | null = null;
 
+	// ThreeJS variables
 	private renderer!: THREE.WebGLRenderer;
 	private scene = new THREE.Scene();
 	private camera = new THREE.PerspectiveCamera(60, 1, 0.01, 10000);
@@ -40,22 +44,42 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 	private frameId: number | null = null;
 	private currentPoints: THREE.Points | null = null;
 
+
 	/**
 	 * Lifecycle hook called after the component's view has been fully initialized.
 	 */
 	ngAfterViewInit(): void {
 
-		const canvas = this.canvasRef.nativeElement;
+		// set up ThreeJS
+		this.initThree();
+		
+		// resize once on start up & kick off animation 
+		this.handleResize();
+		this.animate();
 
+		// set up window listeners
+		this.addListeners();
+	}
+
+
+	/**
+	 * Initializes the ThreeJS scene, camera, renderer, and controls.
+	 */
+	initThree(): void {
+
+		// get our canvas ref & build our ThreeJS renderer
+		const canvas = this.canvasRef.nativeElement;
 		this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 		this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 		this.scene.background = new THREE.Color(0x0b0d12);
 
+		// set up a camera with basic orbit controls
 		this.camera.position.set(0.7, 0.7, 0.7);
 		this.controls = new OrbitControls(this.camera, canvas);
 		this.controls.enableDamping = true;
 
-		const light = new THREE.AmbientLight(0xffffff, 0.6);
+		// add some lights in case we need to render objects (i.e. debug cube)
+		const light = new THREE.AmbientLight(0xffffff, 1.6);
 		this.scene.add(light);
 
 		// Directional light for better shading
@@ -63,8 +87,10 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 		dirLight.position.set(2, 4, 3);
 		this.scene.add(dirLight);
 
-		// --- DEBUG CUBE -----------------------------------------------------
+		// if we have the debug cube prop, add a debug cube
+		// (used to test rendering without having to load a PLY file)
 		if (this.showDebugCube) {
+
 			// Adds a simple gray cube to verify that rendering & camera controls
 			// are working before loading any PLY content.
 			const debugGeometry = new THREE.BoxGeometry(1, 1, 1);
@@ -76,14 +102,15 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 			const debugCube = new THREE.Mesh(debugGeometry, debugMaterial);
 			this.scene.add(debugCube);
 		}
-		// --------------------------------------------------------------------
+	}
 
-		this.handleResize();
-		window.addEventListener('resize', this.handleResize);
-		this.animate();
 
-		// set up keyboard controls
-		window.addEventListener('keydown', this.handleKey);
+	/**
+	 * Adds event listeners for window resize and keyboard input.
+	 */
+	addListeners(): void {
+		window.addEventListener('resize', this.handleResize.bind(this));
+		window.addEventListener('keydown', this.handleKey.bind(this));
 	}
 
 
@@ -112,10 +139,14 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 	 */
 	async ngOnChanges(): Promise<void> {
 
+		// if we don't have a model to to load, exit
 		if (!this.model)
 			return;
 
+		// break out the path to the PLY file & it's default xforms
 		const { path, transform } = this.model;
+
+		// load the PLY file
 		await this.loadPly(path, transform);
 	}
 
@@ -127,18 +158,22 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 	 */
 	private loadPly = async (path: string, transform?: any) => {
 
-		console.log('[PLY] Loading with transform:', transform);
+		// for debug, make sure we got good data`
+		// console.log('[PLY] Loading with transform:', transform);
 
+		// load the file
 		const loader = new PLYLoader();
-
 		loader.load(path, (geometry: THREE.BufferGeometry) => {
+
+			// get the geometry centered
 			geometry.computeBoundingBox();
 			geometry.center();
 
-			// Check for color data
+			// Check for color data (not all PLYs will have per vertex colors)
 			const hasColors = geometry.hasAttribute('color');
-			console.log('[PLY] Has vertex colors:', hasColors);
+			// console.log('[PLY] Has vertex colors:', hasColors);
 
+			// initial material, but we can change based on if we have colors
 			let material: THREE.PointsMaterial;
 
 			if (hasColors) {
@@ -147,8 +182,10 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 					sizeAttenuation: true,
 					vertexColors: true
 				});
+
+			// Fallback gray-white color if no vertex colors
 			} else {
-				// Fallback gray-white color if no vertex colors
+				
 				material = new THREE.PointsMaterial({
 					size: 0.01,
 					sizeAttenuation: true,
@@ -156,8 +193,10 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 				});
 			}
 
+			// create the points object
 			const points = new THREE.Points(geometry, material);
 
+			// apply supplied initial transform if any
 			if (transform) {
 				points.position.set(
 					transform.position.x,
@@ -176,12 +215,15 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 				);
 			}
 
+			// clear out any existing points from the scene
 			if (this.currentPoints) {
+
 				this.scene.remove(this.currentPoints);
 				(this.currentPoints.material as any).dispose?.();
 				this.currentPoints.geometry.dispose();
 			}
 
+			// add the new points to the scene
 			this.currentPoints = points;
 			this.scene.add(points);
 
@@ -202,9 +244,11 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 	 */
 	private handleResize = () => {
 
+		// measure our canvas parent element
 		const el = this.canvasRef.nativeElement.parentElement as HTMLElement;
 		const { clientWidth: w, clientHeight: h } = el;
 
+		// update camera & renderer
 		this.camera.aspect = w / h;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(w, h, false);
@@ -233,16 +277,20 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 	 */
 	private handleKey = (event: KeyboardEvent) => {
 
-		if (!this.currentPoints) return;
+		// GTFO if nothing is on screen
+		if (!this.currentPoints)
+			return;
 
-		const stepMultiplier = 100; //event.shiftKey ? 15 : 1;
-
+		// determine step size (larger if shift is held)
+		const stepMultiplier = event.shiftKey ? 100 : 10;
 		const obj = this.currentPoints;
 		const step = 0.1 * stepMultiplier;
 		const scaleStep = 0.05;
 		const rotStep = 0.05;
 
+		// handle spceific keys
 		switch (event.key.toLowerCase()) {
+
 			// Translation
 			case 'w': obj.position.z -= step; break;
 			case 's': obj.position.z += step; break;
@@ -260,8 +308,6 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 			case 'arrowright': obj.rotation.y -= rotStep; break;
 			case 'arrowup': obj.rotation.x += rotStep; break;
 			case 'arrowdown': obj.rotation.x -= rotStep; break;
-
-			// use numpad for roll
 			case '4': obj.rotation.z += rotStep; break;
 			case '6': obj.rotation.z -= rotStep; break;
 
