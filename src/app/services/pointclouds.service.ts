@@ -23,15 +23,6 @@ export interface Pointcloud {
 export class PointcloudsService {
 
 	public readonly list: Pointcloud[] = [		
-		// {
-		// 	name: 'Queens Roof',
-		// 	path: '/assets/pointclouds/sample2.ply',
-		// 	transform: {
-		// 		position: { x: 1118, y: 1174, z: 596 },
-		// 		rotation: { x: -2.1, y: -0.5, z: 0.55 },
-		// 		scale: { x: 18.67, y: 18.67, z: 18.67 }
-		// 	}
-		// },
 		{
 			name: 'Queens Roof',
 			path: 'assets/pointclouds/sample2.ply',

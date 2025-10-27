@@ -7,7 +7,7 @@
 
 // Angular Imports
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withHashLocation, withInMemoryScrolling } from '@angular/router';
 
 // Route Imports
 import { routes } from './app.routes';
@@ -15,6 +15,10 @@ import { routes } from './app.routes';
 // export our application config
 export const appConfig: ApplicationConfig = {
 	providers: [
-		provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }))
+		provideRouter(
+			routes,
+			withHashLocation(),
+			 withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
+		)
 	]
 };
