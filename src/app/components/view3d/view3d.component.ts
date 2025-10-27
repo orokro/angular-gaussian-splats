@@ -1,7 +1,18 @@
+/*
+	view3d.component.ts
+	-------------------
+
+	Set's up ThreeJS & renders PLY point clouds.
+*/
+
+// Angular Imports
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+
+// Library Imports
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader.js';
+
 
 @Component({
     selector: 'app-view3d',
@@ -10,6 +21,7 @@ import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader.js';
     styleUrl: './view3d.component.scss'
 })
 export class View3DComponent implements AfterViewInit, OnDestroy {
+
     @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
     @Input() plyPath: string | null = null;
 
@@ -20,7 +32,11 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
     private frameId: number | null = null;
     private currentPoints: THREE.Points | null = null;
 
+	/**
+	 * Lifecycle hook called after the component's view has been fully initialized.
+	 */
     ngAfterViewInit(): void {
+
         const canvas = this.canvasRef.nativeElement;
 
         this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -39,19 +55,43 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
         this.animate();
     }
 
+
+	/**
+	 * Lifecycle hook called when the component is about to be destroyed.
+	 */
     ngOnDestroy(): void {
+
         window.removeEventListener('resize', this.handleResize);
-        if (this.frameId !== null) cancelAnimationFrame(this.frameId);
+
+        if (this.frameId !== null)
+			cancelAnimationFrame(this.frameId);
+
         this.renderer?.dispose();
     }
 
+
+	/**
+	 * Lifecycle hook called when any data-bound input properties change.
+	 * 
+	 * @returns A promise that resolves when the component's input properties change.
+	 */
     async ngOnChanges(): Promise<void> {
-        if (!this.plyPath) return;
+
+        if (!this.plyPath)
+			return;
+
         await this.loadPly(this.plyPath);
     }
 
+	/**
+	 * Loads a PLY file and adds it to the scene.
+	 * 
+	 * @param path - The path to the PLY file to be loaded.
+	 */
     private loadPly = async (path: string) => {
+
         const loader = new PLYLoader();
+
         loader.load(path, (geometry: THREE.BufferGeometry) => {
             geometry.computeBoundingBox();
             geometry.center();
@@ -84,15 +124,26 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
         });
     };
 
+
+	/**
+	 * Handles window resize events to adjust the camera and renderer size.
+	 */
     private handleResize = () => {
+
         const el = this.canvasRef.nativeElement.parentElement as HTMLElement;
         const { clientWidth: w, clientHeight: h } = el;
+
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(w, h, false);
     };
 
+
+	/**
+	 * Animation loop to render the scene.
+	 */
     private animate = () => {
+
         this.frameId = requestAnimationFrame(this.animate);
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
