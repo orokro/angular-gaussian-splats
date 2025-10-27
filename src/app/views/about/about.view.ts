@@ -7,6 +7,7 @@
 
 // Angular Imports
 import { Component } from '@angular/core';
+import { NgForOf } from '@angular/common';
 
 // Component Imports
 import { InfoBoxComponent } from '../../components/info-box/info-box.component';
@@ -15,7 +16,7 @@ import { InfoBoxComponent } from '../../components/info-box/info-box.component';
 @Component({
 	selector: 'app-about-view',
 	standalone: true,
-	imports: [InfoBoxComponent],
+	imports: [InfoBoxComponent, NgForOf],
 	templateUrl: './about.view.html',
 	styleUrl: './about.view.scss'
 })

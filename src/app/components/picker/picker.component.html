@@ -1,0 +1,9 @@
+<div class="picker">
+	<label>
+		<span>Point Cloud</span>
+		<select (change)="onChange($event)">
+			<option value="" disabled selected>Select…</option>
+			<option *ngFor="let it of pcs.items" [value]="it.path">{{ it.label }}</option>
+		</select>
+	</label>
+</div>
