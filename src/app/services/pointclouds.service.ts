@@ -22,15 +22,14 @@ export interface Pointcloud {
 @Injectable({ providedIn: 'root' })
 export class PointcloudsService {
 
-	public readonly list: Pointcloud[] = [
-		
+	public readonly list: Pointcloud[] = [		
 		{
 			name: 'Queens Roof',
 			path: '/assets/pointclouds/sample2.ply',
 			transform: {
 				position: { x: 0, y: 0, z: 0 },
 				rotation: { x: 0, y: Math.PI / 2, z: 0 },
-				scale: { x: 0.5, y: 0.5, z: 0.5 }
+				scale: { x: 20, y: 20, z: 20 }
 			}
 		},
 		{

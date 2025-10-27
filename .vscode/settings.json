@@ -5,6 +5,7 @@
 	"editor.formatOnSave": false,
 	"prettier.enable": false,
 	"cSpell.words": [
+		"gtfo",
 		"Pointcloud",
 		"Pointclouds"
 	]
