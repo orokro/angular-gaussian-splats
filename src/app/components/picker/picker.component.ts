@@ -42,15 +42,16 @@ export class PickerComponent implements OnInit {
 		}
 	}
 
+
 	/**
 	 * Handles selection of a point cloud model.
 	 */
 	onSelect(model: Pointcloud) {
-		console.log('[Picker] Selected:', model.name);
+		console.log('[Picker] Selected:', model);
 		this.modelSelected.emit(model);
 	}
 
-	
+
 	/**
 	 * Handles selection change event from the UI.
 	 * 

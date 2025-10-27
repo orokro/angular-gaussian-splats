@@ -25,5 +25,11 @@ import { Pointcloud } from '../../services/pointclouds.service';
 	styleUrls: ['./gaussian-viewer.component.scss']
 })
 export class GaussianViewerComponent {
-	selectedModel: Pointcloud | null = null;
+
+	currentModel: Pointcloud | null = null;
+
+	onModelSelected(model: Pointcloud) {
+		console.log('[Viewer] Model selected:', model.name);
+		this.currentModel = model;
+	}
 }

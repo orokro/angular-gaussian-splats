@@ -2,11 +2,12 @@
 
 	<!-- our main viewer -->
 	<app-view3d 
-		[model]="selectedModel"
+		[model]="currentModel"
 		[showDebugCube]="false"
 	></app-view3d>
 
-	<app-picker (modelSelected)="selectedModel = $event"></app-picker>
+	<app-picker (modelSelected)="onModelSelected($event)"></app-picker>
+
 	<app-status-bar class="status"></app-status-bar>
 
 </section>

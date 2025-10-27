@@ -27,7 +27,7 @@ export class PointcloudsService {
 			name: 'Queens Roof',
 			path: '/assets/pointclouds/sample2.ply',
 			transform: {
-				position: { x: 0, y: 0, z: 0 },
+				position: { x: 672, y: 317, z: 11 },
 				rotation: { x: 0, y: Math.PI / 2, z: 0 },
 				scale: { x: 20, y: 20, z: 20 }
 			}
@@ -37,7 +37,7 @@ export class PointcloudsService {
 			path: '/assets/pointclouds/sample1.ply',
 			transform: {
 				position: { x: 0, y: -0.3, z: 0 },
-				rotation: { x: 0, y: 0, z: 0 },
+				rotation: { x: Math.PI, y: Math.PI, z: 0 },
 				scale: { x: 1, y: 1, z: 1 }
 			}
 		},
