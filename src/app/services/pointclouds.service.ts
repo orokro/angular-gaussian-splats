@@ -46,7 +46,7 @@ export class PointcloudsService {
 			name: 'Cactus',
 			path: '/assets/pointclouds/sample1.ply',
 			transform: {
-				position: { x: -0.2, y: 1.1, z: 0.3 },
+				position: { x: -0.2, y: 0.5, z: 0.3 },
 				rotation: { x: Math.PI, y: 2.6915926535897947, z: 0 },
 				scale: { x: 1, y: 1, z: 1 }
 			}
