@@ -15,9 +15,19 @@
 
 
 .brand {
+	
+	// nice teal-ill
+	background: #00ABAE;
+	border-radius: 100px;
+	padding: 0.25rem 0.75rem;
+
+	// text settings
 	font-weight: 600;
-	letter-spacing: 0.5px;
+	letter-spacing: 0.5px;	
+	text-transform: uppercase;
+	color: white;
 }
+
 
 nav a {
 	text-decoration: none;

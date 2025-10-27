@@ -10,3 +10,13 @@
 	display: block;
 	background: transparent;
 }
+
+a {
+	color: #00ABAE;
+	text-decoration: none;	
+	font-weight: bold;
+
+	&:hover, &:focus {
+		text-decoration: underline;
+	}
+}

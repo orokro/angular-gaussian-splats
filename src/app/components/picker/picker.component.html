@@ -1,6 +1,6 @@
 <div class="picker">
 	<label>
-		<span>Point Cloud</span>
+		<span>Select Point Cloud:</span>
 		<select (change)="onSelectByEvent($event)">
 			<option *ngFor="let m of pcs.list">{{ m.name }}</option>
 		</select>
