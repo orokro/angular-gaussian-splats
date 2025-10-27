@@ -1,5 +1,12 @@
 <section class="wrap">
-	<app-view3d [plyPath]="currentPath"></app-view3d>
+
+	<!-- our main viewer -->
+	<app-view3d 
+		[plyPath]="currentPath"
+		[showDebugCube]="false"
+	></app-view3d>
+
 	<app-picker class="picker" (pick)="onPick($event)"></app-picker>
 	<app-status-bar class="status"></app-status-bar>
+
 </section>

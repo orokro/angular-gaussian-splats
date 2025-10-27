@@ -24,6 +24,7 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 
     @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
     @Input() plyPath: string | null = null;
+	@Input() showDebugCube: boolean = false;
 
     private renderer!: THREE.WebGLRenderer;
     private scene = new THREE.Scene();
@@ -56,16 +57,18 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 		this.scene.add(dirLight);
 
 		// --- DEBUG CUBE -----------------------------------------------------
-		// Adds a simple gray cube to verify that rendering & camera controls
-		// are working before loading any PLY content.
-		const debugGeometry = new THREE.BoxGeometry(1, 1, 1);
-		const debugMaterial = new THREE.MeshStandardMaterial({
-			color: 0x777777,
-			metalness: 0.3,
-			roughness: 0.7
-		});
-		const debugCube = new THREE.Mesh(debugGeometry, debugMaterial);
-		this.scene.add(debugCube);
+		if(this.showDebugCube){
+			// Adds a simple gray cube to verify that rendering & camera controls
+			// are working before loading any PLY content.
+			const debugGeometry = new THREE.BoxGeometry(1, 1, 1);
+			const debugMaterial = new THREE.MeshStandardMaterial({
+				color: 0x777777,
+				metalness: 0.3,
+				roughness: 0.7
+			});
+			const debugCube = new THREE.Mesh(debugGeometry, debugMaterial);
+			this.scene.add(debugCube);
+		}	
 		// --------------------------------------------------------------------
 
         this.handleResize();
