@@ -50,6 +50,24 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
         const light = new THREE.AmbientLight(0xffffff, 0.6);
         this.scene.add(light);
 
+		// Directional light for better shading
+		const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+		dirLight.position.set(2, 4, 3);
+		this.scene.add(dirLight);
+
+		// --- DEBUG CUBE -----------------------------------------------------
+		// Adds a simple gray cube to verify that rendering & camera controls
+		// are working before loading any PLY content.
+		const debugGeometry = new THREE.BoxGeometry(1, 1, 1);
+		const debugMaterial = new THREE.MeshStandardMaterial({
+			color: 0x777777,
+			metalness: 0.3,
+			roughness: 0.7
+		});
+		const debugCube = new THREE.Mesh(debugGeometry, debugMaterial);
+		this.scene.add(debugCube);
+		// --------------------------------------------------------------------
+
         this.handleResize();
         window.addEventListener('resize', this.handleResize);
         this.animate();
