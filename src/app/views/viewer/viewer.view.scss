@@ -1,7 +1,10 @@
 :host {
+	position: fixed;
+	top: 48px;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	display: block;
-
-	/* no page scroll while on viewer */
 	overflow: hidden;
-	
+	background: transparent;
 }

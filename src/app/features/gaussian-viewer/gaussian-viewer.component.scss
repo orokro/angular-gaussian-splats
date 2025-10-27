@@ -1,12 +1,8 @@
-wrap {
-	position: fixed;
-	/* occupy full viewport under header */
-	top: 48px;
-	/* header height; adjust if you tweak header */
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: #0b0d12;
+.wrap {
+	position: absolute;
+	inset: 0;
+	background: transparent;
+	overflow: hidden;
 }
 
 .picker {
