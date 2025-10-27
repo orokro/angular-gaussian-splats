@@ -1,0 +1,17 @@
+/*
+	app.component.scss
+	------------------
+
+	Styles for the root application component.
+*/
+
+:host {
+	display: block;
+	min-height: 100vh;
+	background: #0f1115;
+	color: #e7e7ea;
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, sans-serif;
+}
+
+
+/* keep default scrolling; the Viewer view will manage its own fixed layout */

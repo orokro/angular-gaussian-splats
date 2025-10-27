@@ -1,0 +1,22 @@
+<main class="about">
+	<app-info-box title="About">
+		<p>
+			This project shows how to render PLY point clouds in Angular with Three.js. True Gaussian splats use
+			custom shaders (a good future enhancement). For now: crisp points, orbit controls, and an overlay picker.
+		</p>
+	</app-info-box>
+
+
+	<app-info-box title="Developer">
+		<ul>
+			<li *ngFor="let l of links.dev"><a [href]="l.href" target="_blank" rel="noopener">{{ l.label }}</a></li>
+		</ul>
+	</app-info-box>
+
+
+	<app-info-box title="Get">
+		<ul>
+			<li *ngFor="let l of links.project"><a [href]="l.href" target="_blank" rel="noopener">{{ l.label }}</a></li>
+		</ul>
+	</app-info-box>
+</main>

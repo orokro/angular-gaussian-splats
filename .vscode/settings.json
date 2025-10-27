@@ -1,0 +1,11 @@
+{
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"editor.formatOnSave": false,
+	"prettier.enable": false,
+	"cSpell.words": [
+		"Pointclouds"
+	]
+}
+

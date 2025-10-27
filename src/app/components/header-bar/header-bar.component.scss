@@ -1,0 +1,29 @@
+.bar {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5rem 1rem;
+	background: #141823;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand {
+	font-weight: 600;
+	letter-spacing: 0.5px;
+}
+
+nav a {
+	text-decoration: none;
+	color: #cbd1ff;
+	margin-left: 1rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.5rem;
+}
+
+nav a.active,
+nav a:hover {
+	background: rgba(203, 209, 255, 0.12);
+}
