@@ -235,7 +235,7 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 
 		if (!this.currentPoints) return;
 
-		const stepMultiplier = event.shiftKey ? 5 : 1;
+		const stepMultiplier = event.shiftKey ? 15 : 1;
 
 		const obj = this.currentPoints;
 		const step = 0.1 * stepMultiplier;
@@ -261,6 +261,10 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 			case 'arrowup': obj.rotation.x += rotStep; break;
 			case 'arrowdown': obj.rotation.x -= rotStep; break;
 
+			// use numpad for roll
+			case '4': obj.rotation.z += rotStep; break;
+			case '6': obj.rotation.z -= rotStep; break;
+			
 			// Print
 			case 'p':
 				console.log('[Transform]',
