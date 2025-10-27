@@ -35,7 +35,7 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 
 	private renderer!: THREE.WebGLRenderer;
 	private scene = new THREE.Scene();
-	private camera = new THREE.PerspectiveCamera(60, 1, 0.01, 1000);
+	private camera = new THREE.PerspectiveCamera(60, 1, 0.01, 10000);
 	private controls!: InstanceType<typeof OrbitControls>;
 	private frameId: number | null = null;
 	private currentPoints: THREE.Points | null = null;
@@ -143,7 +143,7 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 
 			if (hasColors) {
 				material = new THREE.PointsMaterial({
-					size: 0.01,
+					size: 1.01,
 					sizeAttenuation: true,
 					vertexColors: true
 				});
@@ -235,7 +235,7 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 
 		if (!this.currentPoints) return;
 
-		const stepMultiplier = event.shiftKey ? 15 : 1;
+		const stepMultiplier = 100; //event.shiftKey ? 15 : 1;
 
 		const obj = this.currentPoints;
 		const step = 0.1 * stepMultiplier;
@@ -264,7 +264,7 @@ export class View3DComponent implements AfterViewInit, OnDestroy {
 			// use numpad for roll
 			case '4': obj.rotation.z += rotStep; break;
 			case '6': obj.rotation.z -= rotStep; break;
-			
+
 			// Print
 			case 'p':
 				console.log('[Transform]',
