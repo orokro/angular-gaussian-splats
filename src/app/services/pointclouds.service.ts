@@ -34,7 +34,7 @@ export class PointcloudsService {
 		// },
 		{
 			name: 'Queens Roof',
-			path: '/assets/pointclouds/sample2.ply',
+			path: 'assets/pointclouds/sample2.ply',
 			transform: {
 				// position: { x: -520, y: 820, z: -1150 },
 				position: { x: -810, y: 640, z: -1460 },
@@ -44,7 +44,7 @@ export class PointcloudsService {
 		},
 		{
 			name: 'Cactus',
-			path: '/assets/pointclouds/sample1.ply',
+			path: 'assets/pointclouds/sample1.ply',
 			transform: {
 				position: { x: -0.2, y: 0.5, z: 0.3 },
 				rotation: { x: Math.PI, y: 2.6915926535897947, z: 0 },
